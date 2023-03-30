@@ -5,4 +5,8 @@ const (
 	DatabaseName            = "todo_app"
 	HealthcheckEndpoint     = "/v1/healthcheck"
 	HealthcheckEndpointName = "healthcheck"
+
+	// Users
+	UsersBaseEndpoint      = "/v1/users"
+	CreateUserEndpointName = "create-user"
 )

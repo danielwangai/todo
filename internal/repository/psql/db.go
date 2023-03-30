@@ -20,7 +20,6 @@ func New(db *sql.DB, log *logrus.Logger) svc.DAO {
 
 // NewDBClient creates a new database instance
 func NewDBClient(log *logrus.Logger, username, password, host, dbName, sslMode string) (*sql.DB, error) {
-	// connString := fmt.Sprintf("postgresql://%s:%s@%s/%s??sslmode=disable", username, password, host, dbName)
 	connString := fmt.Sprintf("host=%s port=5432 user=%s dbname=%s password=%s sslmode=%s", host, username, dbName, password, sslMode)
 	db, err := sql.Open("postgres", connString)
 	if err != nil {

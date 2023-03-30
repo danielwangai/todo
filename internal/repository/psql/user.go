@@ -9,14 +9,11 @@ import (
 )
 
 func (dao *dbClient) CreateUser(ctx context.Context, user *repo.UserModelType) (*repo.UserModelType, error) {
-	dao.log.Infof("Create User OBJ: %v", user)
 	// check if email is unique
-	x, err := dao.findUserByEmail(ctx, user.Email)
+	_, err := dao.findUserByEmail(ctx, user.Email)
 	if err != sql.ErrNoRows && err != nil {
-		dao.log.Infof("Find USER Error: %v", err)
 		return nil, err
 	}
-	dao.log.Infof("Find USER: %v", x)
 	var id int
 
 	query := `
@@ -30,7 +27,7 @@ func (dao *dbClient) CreateUser(ctx context.Context, user *repo.UserModelType) (
 
 	user.ID = id
 
-	dao.log.Infof("DB-OP: User created successfully")
+	dao.log.Infof("DB-OP: User created successfully: %v", user)
 	return user, nil
 }
 
@@ -56,19 +53,6 @@ func (dao *dbClient) findUserByEmail(ctx context.Context, email string) (*repo.U
 		Email:     email,
 		CreatedAt: createdAt,
 	}
-	dao.log.Info("-=----====: ", user)
 
 	return user, nil
 }
-
-// `
-// CREATE TABLE users(
-// 	id SERIAL PRIMARY KEY,
-// 	first_name VARCHAR(50) NOT NULL,
-// 	last_name VARCHAR(50) NOT NULL,
-// 	email VARCHAR(150) UNIQUE NOT NULL,
-// 	password VARCHAR(200) NOT NULL,
-// 	created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-// 	updated_at TIMESTAMP
-// )
-// `
