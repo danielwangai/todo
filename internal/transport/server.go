@@ -7,7 +7,8 @@ import (
 
 	"github.com/danielwangai/todo-app/internal/config"
 	"github.com/danielwangai/todo-app/internal/logging"
-
+	"github.com/danielwangai/todo-app/internal/repository/psql"
+	"github.com/danielwangai/todo-app/internal/svc"
 	"github.com/sirupsen/logrus"
 )
 
@@ -35,7 +36,21 @@ func RunServer() error {
 	}
 
 	server := NewServer()
-	server.Router.InitializeRoutes(ctx, log)
+
+	dbClient, err := psql.NewDBClient(log, cfg.DB.Username, cfg.DB.Password, cfg.DB.Host, cfg.DB.DBName, cfg.DB.SSLMode)
+	if err != nil {
+		return err
+	}
+
+	// ping connection
+	err = psql.PingDB(log, dbClient)
+	if err != nil {
+		return err
+	}
+
+	dao := psql.New(dbClient, log)
+	service := svc.New(dao, log)
+	server.Router.InitializeRoutes(ctx, service, log)
 	log.Infof("starting server on port %s", cfg.WebServer.Port)
 	if err := http.ListenAndServe(":"+cfg.WebServer.Port, *server.Router); err != nil {
 		log.WithError(err).Error("could not start the HTTP server")

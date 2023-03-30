@@ -18,8 +18,17 @@ type WebServerConfig struct {
 	Port string `envconfig:"TODO_APP_SERVER_PORT" split_words:"true"`
 }
 
+type PostgresConfig struct {
+	Username string `envconfig:"TODO_APP_DB_USER"`
+	DBName   string `envconfig:"TODO_APP_DB_NAME"`
+	Password string `envconfig:"TODO_APP_DB_PASSWORD"`
+	Host     string `envconfig:"TODO_APP_DB_HOST"`
+	SSLMode  string `envconfig:"TODO_APP_DB_SSL_MODE"`
+}
+
 type AppConfig struct {
 	WebServer *WebServerConfig
+	DB        *PostgresConfig
 }
 
 // FromEnv loads the app config from environment variables
