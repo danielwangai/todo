@@ -50,7 +50,7 @@ func RunServer() error {
 
 	dao := psql.New(dbClient, log)
 	service := svc.New(dao, log)
-	server.Router.InitializeRoutes(ctx, service, log)
+	server.Router.InitializeRoutes(ctx, service, log, dbClient)
 	log.Infof("starting server on port %s", cfg.WebServer.Port)
 	if err := http.ListenAndServe(":"+cfg.WebServer.Port, *server.Router); err != nil {
 		log.WithError(err).Error("could not start the HTTP server")
