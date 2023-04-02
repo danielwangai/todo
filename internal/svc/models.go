@@ -25,3 +25,19 @@ type UserServiceResponseType struct {
 	Email     string
 	CreatedAt time.Time
 }
+
+// todo item types
+type ItemServiceRequestType struct {
+	Name      string
+	UserId    int
+	CreatedAt time.Time
+}
+
+type ItemServiceResponseType struct {
+	ID        int
+	Name      string
+	UserId    int
+	IsDeleted bool
+	CreatedAt time.Time
+	UpatedAt  time.Time
+}

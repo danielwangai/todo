@@ -25,3 +25,12 @@ func ValidateUserInput(u *UserAPIRequestType) []string {
 
 	return errs
 }
+
+func ValidateCreateItemInput(u *ItemServiceRequestType) []string {
+	var errs []string
+	if u.Name == "" {
+		errs = append(errs, FirstNameRequiredError.Error())
+	}
+
+	return errs
+}

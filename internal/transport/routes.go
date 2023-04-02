@@ -30,4 +30,8 @@ func (r *Router) InitializeRoutes(ctx context.Context, service svc.Svc, log *log
 	r.HandleFunc(literals.UsersBaseEndpoint, handlers.CreateUser(ctx, service, log)).
 		Methods(http.MethodPost).
 		Name(literals.CreateUserEndpointName)
+
+	r.HandleFunc(literals.TodoBaseEndpoint, handlers.CreateTodo(ctx, service, log)).
+		Methods(http.MethodPost).
+		Name(literals.CreateTodoEndpointName)
 }

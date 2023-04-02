@@ -23,3 +23,27 @@ func ConvertUserModelToUserServiceObject(userModel *repo.UserModelType) *UserSer
 		CreatedAt: userModel.CreatedAt,
 	}
 }
+
+// item conversions
+func ConvertItemServiceRequestToModelObject(itemSvcObj *ItemServiceRequestType) *repo.ItemModelType {
+	return &repo.ItemModelType{
+		Name:      itemSvcObj.Name,
+		UserId:    itemSvcObj.UserId,
+		CreatedAt: itemSvcObj.CreatedAt,
+	}
+}
+
+func ConvertItemModelToServiceResponseObject(itemModel *repo.ItemModelType) *ItemServiceResponseType {
+	item := &ItemServiceResponseType{
+		ID:        itemModel.ID,
+		Name:      itemModel.Name,
+		UserId:    itemModel.UserId,
+		IsDeleted: itemModel.IsDeleted,
+		CreatedAt: itemModel.CreatedAt,
+	}
+	if itemModel.UpdatedAt.Valid {
+		item.UpatedAt = itemModel.UpdatedAt.Time
+	}
+
+	return item
+}

@@ -2,6 +2,8 @@ package svc
 
 import (
 	"context"
+	"database/sql"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
@@ -38,6 +40,20 @@ func (s *svc) CreateUser(ctx context.Context, user *UserServiceRequestType) (*Us
 
 	// return ConvertUserModelToUserServiceObject(newUser), nil
 	return user, nil
+}
+
+func (s *svc) CreateTodoItem(ctx context.Context, item *ItemServiceRequestType) (*ItemServiceResponseType, error) {
+	// convert service request to item model
+	itemModel := ConvertItemServiceRequestToModelObject(item)
+	itemModel.CreatedAt = time.Now()
+
+	// create item
+	itemModel, err := s.dao.CreateTodoItem(ctx, itemModel)
+	if err == sql.ErrNoRows || err != nil {
+		return nil, err
+	}
+
+	return ConvertItemModelToServiceResponseObject(itemModel), nil
 }
 
 func (s *svc) hashPassword(password []byte) (string, error) {

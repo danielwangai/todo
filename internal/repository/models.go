@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"time"
 )
 
@@ -13,4 +14,13 @@ type UserModelType struct {
 	Password  string
 	CreatedAt time.Time
 	UpdatedAt time.Time
+}
+
+type ItemModelType struct {
+	ID        int
+	Name      string
+	UserId    int
+	IsDeleted bool
+	CreatedAt time.Time
+	UpdatedAt sql.NullTime
 }
