@@ -43,5 +43,9 @@ func (r *Router) InitializeRoutes(ctx context.Context, service svc.Svc, log *log
 		Methods(http.MethodGet).
 		Name(literals.GetAllTodoItemsEndpointName)
 
+	r.HandleFunc(literals.FindTodoByIdEndpoint, handlers.FindTodoItemById(ctx, service, log)).
+		Methods(http.MethodGet).
+		Name(literals.FindTodoByIdEndpointName)
+
 	r.Use(handlers.AuthMiddleware)
 }

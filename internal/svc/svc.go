@@ -79,6 +79,21 @@ func (s *svc) GetAllTodoItems(ctx context.Context, id int) ([]*ItemServiceRespon
 	return itemList, nil
 }
 
+func (s *svc) FindTodoItemById(ctx context.Context, id int) (*ItemServiceResponseType, error) {
+	item, err := s.dao.FindTodoItemById(ctx, id)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			s.log.WithError(err).Error("item matching id: %d not found", id)
+			return nil, err
+		}
+
+		s.log.WithError(err).Error("an error ocurred when fetching item matching id: %d", id)
+		return nil, err
+	}
+
+	return ConvertItemModelToServiceResponseObject(item), err
+}
+
 func (s *svc) hashPassword(password []byte) (string, error) {
 	hash, err := bcrypt.GenerateFromPassword(password, bcrypt.MinCost)
 	if err != nil {

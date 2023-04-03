@@ -9,4 +9,5 @@ type Svc interface {
 	FindUserByEmail(ctx context.Context, email string) (*UserServiceRequestType, error)
 	CreateTodoItem(ctx context.Context, item *ItemServiceRequestType) (*ItemServiceResponseType, error)
 	GetAllTodoItems(ctx context.Context, id int) ([]*ItemServiceResponseType, error)
+	FindTodoItemById(ctx context.Context, id int) (*ItemServiceResponseType, error)
 }

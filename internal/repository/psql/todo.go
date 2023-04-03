@@ -78,3 +78,16 @@ func (dao *dbClient) GetAllTodoItems(ctx context.Context, id int) ([]*repo.ItemM
 
 	return items, nil
 }
+
+func (dao *dbClient) FindTodoItemById(ctx context.Context, id int) (*repo.ItemModelType, error) {
+	var i repo.ItemModelType
+	query := `SELECT id, name, user_id, is_deleted, created_at, updated_at from items WHERE id=$1`
+	err := dao.db.QueryRow(query, id).
+		Scan(&i.ID, &i.Name, &i.UserId, &i.IsDeleted, &i.CreatedAt, &i.UpdatedAt)
+	if err != nil {
+		return nil, err
+	}
+
+	dao.log.Infof("DB-OP: successfully fetched todo item: %v by ID: %v", i, id)
+	return &i, nil
+}
