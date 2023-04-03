@@ -8,6 +8,7 @@ const (
 
 	// Users
 	UsersBaseEndpoint      = "/v1/users"
+	SignupEndpoint         = UsersBaseEndpoint + "/signup"
 	CreateUserEndpointName = "create-user"
 	LoginEndpoint          = UsersBaseEndpoint + "/login"
 	LoginEndpointName      = "login"

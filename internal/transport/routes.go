@@ -27,7 +27,7 @@ func (r *Router) InitializeRoutes(ctx context.Context, service svc.Svc, log *log
 		Methods(http.MethodGet).
 		Name(literals.HealthcheckEndpointName)
 
-	r.HandleFunc(literals.UsersBaseEndpoint, handlers.CreateUser(ctx, service, log)).
+	r.HandleFunc(literals.SignupEndpoint, handlers.CreateUser(ctx, service, log)).
 		Methods(http.MethodPost).
 		Name(literals.CreateUserEndpointName)
 
@@ -38,4 +38,6 @@ func (r *Router) InitializeRoutes(ctx context.Context, service svc.Svc, log *log
 	r.HandleFunc(literals.LoginEndpoint, handlers.Login(ctx, service, log)).
 		Methods(http.MethodPost).
 		Name(literals.LoginEndpointName)
+
+	r.Use(handlers.AuthMiddleware)
 }
