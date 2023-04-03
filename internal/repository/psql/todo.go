@@ -38,6 +38,7 @@ func (dao *dbClient) findTodoByNameAndUserId(ctx context.Context, name string, u
 	var itemId int
 	var createdAt time.Time
 	var updatedAt sql.NullTime
+	// var updatedAt time.Time
 	query := `SELECT id, created_at, updated_at FROM items WHERE name=$1 AND user_id=$2`
 	row := dao.db.QueryRow(query, name, userId)
 	err := row.Scan(&itemId, &createdAt, &updatedAt)
@@ -104,4 +105,14 @@ func (dao *dbClient) DeleteTodoItemById(ctx context.Context, id int) error {
 	}
 
 	return nil
+}
+
+func (dao *dbClient) UpdateTodoItem(ctx context.Context, item *repo.ItemModelType, newName string) (*repo.ItemModelType, error) {
+	_, err := dao.db.Exec(`UPDATE items SET name=$1 WHERE id=$2`, newName, item.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	item.Name = newName
+	return item, nil
 }

@@ -23,4 +23,5 @@ type ItemModelType struct {
 	IsDeleted bool
 	CreatedAt time.Time
 	UpdatedAt sql.NullTime
+	// UpdatedAt *time.Time
 }

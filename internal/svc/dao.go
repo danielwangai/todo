@@ -13,4 +13,5 @@ type DAO interface {
 	GetAllTodoItems(ctx context.Context, id int) ([]*repo.ItemModelType, error)
 	FindTodoItemById(ctx context.Context, id int) (*repo.ItemModelType, error)
 	DeleteTodoItemById(ctx context.Context, id int) error
+	UpdateTodoItem(ctx context.Context, item *repo.ItemModelType, newName string) (*repo.ItemModelType, error)
 }

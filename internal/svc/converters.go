@@ -33,6 +33,17 @@ func ConvertItemServiceRequestToModelObject(itemSvcObj *ItemServiceRequestType) 
 	}
 }
 
+func ConvertItemServiceResponseToModelObject(itemSvcObj *ItemServiceResponseType) *repo.ItemModelType {
+	return &repo.ItemModelType{
+		ID:        itemSvcObj.ID,
+		Name:      itemSvcObj.Name,
+		UserId:    itemSvcObj.UserId,
+		IsDeleted: itemSvcObj.IsDeleted,
+		CreatedAt: itemSvcObj.CreatedAt,
+		// UpdatedAt: itemSvcObj.UpdatedAt,
+	}
+}
+
 func ConvertItemModelToServiceResponseObject(itemModel *repo.ItemModelType) *ItemServiceResponseType {
 	item := &ItemServiceResponseType{
 		ID:        itemModel.ID,
@@ -41,9 +52,9 @@ func ConvertItemModelToServiceResponseObject(itemModel *repo.ItemModelType) *Ite
 		IsDeleted: itemModel.IsDeleted,
 		CreatedAt: itemModel.CreatedAt,
 	}
-	if itemModel.UpdatedAt.Valid {
-		item.UpatedAt = itemModel.UpdatedAt.Time
-	}
+	// if itemModel.UpdatedAt.Valid {
+	// 	item.UpatedAt = itemModel.UpdatedAt.Time
+	// }
 
 	return item
 }

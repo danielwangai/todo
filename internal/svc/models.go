@@ -44,5 +44,5 @@ type ItemServiceResponseType struct {
 	UserId    int
 	IsDeleted bool
 	CreatedAt time.Time
-	UpatedAt  time.Time
+	UpdatedAt time.Time
 }

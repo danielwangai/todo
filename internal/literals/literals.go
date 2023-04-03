@@ -21,4 +21,5 @@ const (
 	TodoByIdEndpoint            = TodoBaseEndpoint + "/{id}"
 	FindTodoByIdEndpointName    = "find-todo-by-id"
 	DeleteTodoByIdEndpointName  = "delete-todo-by-id"
+	UpdateTodoByIdEndpointName  = "update-todo-by-id"
 )

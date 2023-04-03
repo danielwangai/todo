@@ -103,6 +103,17 @@ func (s *svc) DeleteTodoItemById(ctx context.Context, id int) error {
 	return nil
 }
 
+func (s *svc) UpdateTodoItem(ctx context.Context, item *ItemServiceResponseType, newName string) (*ItemServiceResponseType, error) {
+	itemModel := ConvertItemServiceResponseToModelObject(item)
+	itemModel, err := s.dao.UpdateTodoItem(ctx, itemModel, newName)
+	if err != nil {
+		s.log.WithError(err).Error("an error ocurred when updating item matching id: %d", item.ID)
+		return nil, err
+	}
+
+	return ConvertItemModelToServiceResponseObject(itemModel), err
+}
+
 func (s *svc) hashPassword(password []byte) (string, error) {
 	hash, err := bcrypt.GenerateFromPassword(password, bcrypt.MinCost)
 	if err != nil {
