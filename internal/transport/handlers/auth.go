@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/danielwangai/todo-app/internal/literals"
 	"github.com/danielwangai/todo-app/internal/svc"
 )
 
@@ -17,7 +18,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			}
 		}
 
-		tokenString := r.Header.Get("Authorization")
+		tokenString := r.Header.Get(literals.AuthorizationHeaderName)
 		if tokenString == "" {
 			// err := errors.New("request does not contain access token")
 			// log.WithError(err)
@@ -25,7 +26,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		if err := svc.ValidateToken(tokenString); err != nil {
+		if _, err := svc.GetToken(tokenString); err != nil {
 			// log.WithError(err)
 			respondWithError(w, http.StatusUnauthorized, "auth token has expired. Please log in again")
 			return

@@ -12,9 +12,7 @@ import (
 var jwtKey = []byte(os.Getenv("TODO_APP_JWT_SECRET_TOKEN"))
 
 type JWTClaim struct {
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-	Email     string `json:"email"`
+	User *UserServiceRequestType
 	jwt.StandardClaims
 }
 
@@ -23,12 +21,10 @@ func CheckPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-func GenerateJWT(firstName, lastName, email string) (string, error) {
+func GenerateJWT(user *UserServiceRequestType) (string, error) {
 	expirationTime := time.Now().Add(1 * time.Hour)
 	claims := &JWTClaim{
-		FirstName: firstName,
-		LastName:  lastName,
-		Email:     email,
+		User: user,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
@@ -39,24 +35,25 @@ func GenerateJWT(firstName, lastName, email string) (string, error) {
 	return tokenString, err
 }
 
-func ValidateToken(signedToken string) (err error) {
+func GetToken(signedToken string) (*JWTClaim, error) {
+	var claim JWTClaim
 	token, err := jwt.ParseWithClaims(
 		signedToken,
-		&JWTClaim{},
+		&claim,
 		func(token *jwt.Token) (interface{}, error) {
 			return []byte(jwtKey), nil
 		},
 	)
 	if err != nil {
-		return
+		return nil, err
 	}
 	claims, ok := token.Claims.(*JWTClaim)
 	if !ok {
-		return errors.New("couldn't parse claims")
+		return nil, errors.New("couldn't parse claims")
 	}
 	if claims.ExpiresAt < time.Now().Local().Unix() {
-		return errors.New("token expired")
+		return nil, errors.New("token expired")
 	}
 
-	return err
+	return &claim, err
 }

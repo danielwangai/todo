@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/danielwangai/todo-app/internal/literals"
 	"github.com/danielwangai/todo-app/internal/svc"
 	"github.com/sirupsen/logrus"
 )
@@ -12,6 +13,13 @@ import (
 func CreateTodo(ctx context.Context, service svc.Svc, log *logrus.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Infoln("begin: create todo endpoint")
+		token, err := svc.GetToken(r.Header.Get(literals.AuthorizationHeaderName))
+		if err != nil {
+			log.WithError(err).Error("failed to create todo item by unauthorized user")
+			respondWithError(w, http.StatusBadRequest, "failed to create todo item. Login to proceed.")
+			return
+		}
+
 		var i svc.ItemServiceRequestType
 		decoder := json.NewDecoder(r.Body)
 		if err := decoder.Decode(&i); err != nil {
@@ -19,6 +27,7 @@ func CreateTodo(ctx context.Context, service svc.Svc, log *logrus.Logger) http.H
 			respondWithError(w, http.StatusBadRequest, "Invalid request payload")
 			return
 		}
+		i.UserId = token.User.ID
 		// validate item
 		errs := svc.ValidateCreateItemInput(&i)
 		if len(errs) > 0 {

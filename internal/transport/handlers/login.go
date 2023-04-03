@@ -36,7 +36,7 @@ func Login(ctx context.Context, service svc.Svc, log *logrus.Logger) http.Handle
 		}
 
 		// generate jwt token
-		tokenString, err := svc.GenerateJWT(user.FirstName, user.LastName, user.Email)
+		tokenString, err := svc.GenerateJWT(user)
 		if err != nil {
 			log.WithError(err).Errorf("login failed due to invalid JWT claims for email: %s", u.Email)
 			respondWithError(w, http.StatusBadRequest, "could not authenticate at this time try again later.")
