@@ -91,3 +91,17 @@ func (dao *dbClient) FindTodoItemById(ctx context.Context, id int) (*repo.ItemMo
 	dao.log.Infof("DB-OP: successfully fetched todo item: %v by ID: %v", i, id)
 	return &i, nil
 }
+
+func (dao *dbClient) DeleteTodoItemById(ctx context.Context, id int) error {
+	_, err := dao.FindTodoItemById(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	_, err = dao.db.Exec(`UPDATE items SET is_deleted=TRUE WHERE id=$1`, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

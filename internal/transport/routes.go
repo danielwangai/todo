@@ -43,9 +43,13 @@ func (r *Router) InitializeRoutes(ctx context.Context, service svc.Svc, log *log
 		Methods(http.MethodGet).
 		Name(literals.GetAllTodoItemsEndpointName)
 
-	r.HandleFunc(literals.FindTodoByIdEndpoint, handlers.FindTodoItemById(ctx, service, log)).
+	r.HandleFunc(literals.TodoByIdEndpoint, handlers.FindTodoItemById(ctx, service, log)).
 		Methods(http.MethodGet).
 		Name(literals.FindTodoByIdEndpointName)
+
+	r.HandleFunc(literals.TodoByIdEndpoint, handlers.DeleteTodoItemById(ctx, service, log)).
+		Methods(http.MethodDelete).
+		Name(literals.DeleteTodoByIdEndpointName)
 
 	r.Use(handlers.AuthMiddleware)
 }

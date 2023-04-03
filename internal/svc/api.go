@@ -10,4 +10,5 @@ type Svc interface {
 	CreateTodoItem(ctx context.Context, item *ItemServiceRequestType) (*ItemServiceResponseType, error)
 	GetAllTodoItems(ctx context.Context, id int) ([]*ItemServiceResponseType, error)
 	FindTodoItemById(ctx context.Context, id int) (*ItemServiceResponseType, error)
+	DeleteTodoItemById(ctx context.Context, id int) error
 }

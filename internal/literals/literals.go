@@ -18,6 +18,7 @@ const (
 	TodoBaseEndpoint            = "/v1/todo"
 	CreateTodoItemEndpointName  = "create-todo"
 	GetAllTodoItemsEndpointName = "get-all-todo"
-	FindTodoByIdEndpoint        = TodoBaseEndpoint + "/{id}"
+	TodoByIdEndpoint            = TodoBaseEndpoint + "/{id}"
 	FindTodoByIdEndpointName    = "find-todo-by-id"
+	DeleteTodoByIdEndpointName  = "delete-todo-by-id"
 )
