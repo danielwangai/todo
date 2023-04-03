@@ -53,3 +53,28 @@ func (dao *dbClient) findTodoByNameAndUserId(ctx context.Context, name string, u
 		UpdatedAt: updatedAt,
 	}, nil
 }
+
+func (dao *dbClient) GetAllTodoItems(ctx context.Context, id int) ([]*repo.ItemModelType, error) {
+	items := []*repo.ItemModelType{}
+	rows, err := dao.db.Query("SELECT id, name, user_id, is_deleted, created_at, updated_at from items WHERE is_deleted=FALSE")
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		i := repo.ItemModelType{}
+		err = rows.Scan(&i.ID, &i.Name, &i.UserId, &i.IsDeleted, &i.CreatedAt, &i.UpdatedAt)
+		if err != nil {
+			dao.log.WithError(err).Error("error scanning get items result")
+			return nil, err
+		}
+		items = append(items, &i)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return items, nil
+}

@@ -65,6 +65,20 @@ func (s *svc) FindUserByEmail(ctx context.Context, email string) (*UserServiceRe
 	return ConvertUserModelToUserServiceObject(user), nil
 }
 
+func (s *svc) GetAllTodoItems(ctx context.Context, id int) ([]*ItemServiceResponseType, error) {
+	items, err := s.dao.GetAllTodoItems(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	itemList := []*ItemServiceResponseType{}
+	for _, v := range items {
+		itemList = append(itemList, ConvertItemModelToServiceResponseObject(v))
+	}
+
+	return itemList, nil
+}
+
 func (s *svc) hashPassword(password []byte) (string, error) {
 	hash, err := bcrypt.GenerateFromPassword(password, bcrypt.MinCost)
 	if err != nil {

@@ -6,6 +6,7 @@ import (
 
 type Svc interface {
 	CreateUser(ctx context.Context, user *UserServiceRequestType) (*UserServiceRequestType, error)
-	CreateTodoItem(ctx context.Context, item *ItemServiceRequestType) (*ItemServiceResponseType, error)
 	FindUserByEmail(ctx context.Context, email string) (*UserServiceRequestType, error)
+	CreateTodoItem(ctx context.Context, item *ItemServiceRequestType) (*ItemServiceResponseType, error)
+	GetAllTodoItems(ctx context.Context, id int) ([]*ItemServiceResponseType, error)
 }

@@ -31,13 +31,17 @@ func (r *Router) InitializeRoutes(ctx context.Context, service svc.Svc, log *log
 		Methods(http.MethodPost).
 		Name(literals.CreateUserEndpointName)
 
-	r.HandleFunc(literals.TodoBaseEndpoint, handlers.CreateTodo(ctx, service, log)).
-		Methods(http.MethodPost).
-		Name(literals.CreateTodoEndpointName)
-
 	r.HandleFunc(literals.LoginEndpoint, handlers.Login(ctx, service, log)).
 		Methods(http.MethodPost).
 		Name(literals.LoginEndpointName)
+
+	r.HandleFunc(literals.TodoBaseEndpoint, handlers.CreateTodo(ctx, service, log)).
+		Methods(http.MethodPost).
+		Name(literals.CreateTodoItemEndpointName)
+
+	r.HandleFunc(literals.TodoBaseEndpoint, handlers.GetTodoItems(ctx, service, log)).
+		Methods(http.MethodGet).
+		Name(literals.GetAllTodoItemsEndpointName)
 
 	r.Use(handlers.AuthMiddleware)
 }

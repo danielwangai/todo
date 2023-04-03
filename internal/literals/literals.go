@@ -15,6 +15,7 @@ const (
 	LoginEndpointName      = "login"
 
 	// Todo
-	TodoBaseEndpoint       = "/v1/todo"
-	CreateTodoEndpointName = "create-todo"
+	TodoBaseEndpoint            = "/v1/todo"
+	CreateTodoItemEndpointName  = "create-todo"
+	GetAllTodoItemsEndpointName = "get-all-todo"
 )
