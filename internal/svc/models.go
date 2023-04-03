@@ -9,6 +9,11 @@ type UserAPIRequestType struct {
 	Password  string `json:"password"`
 }
 
+type UserLoginAPIRequestType struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 type UserServiceRequestType struct {
 	ID        int
 	FirstName string

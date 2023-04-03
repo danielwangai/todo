@@ -10,7 +10,7 @@ import (
 
 func (dao *dbClient) CreateUser(ctx context.Context, user *repo.UserModelType) (*repo.UserModelType, error) {
 	// check if email is unique
-	_, err := dao.findUserByEmail(ctx, user.Email)
+	_, err := dao.FindUserByEmail(ctx, user.Email)
 	if err != sql.ErrNoRows && err != nil {
 		return nil, err
 	}
@@ -31,13 +31,13 @@ func (dao *dbClient) CreateUser(ctx context.Context, user *repo.UserModelType) (
 	return user, nil
 }
 
-func (dao *dbClient) findUserByEmail(ctx context.Context, email string) (*repo.UserModelType, error) {
+func (dao *dbClient) FindUserByEmail(ctx context.Context, email string) (*repo.UserModelType, error) {
 	var id int
-	var firstName, lastName string
+	var firstName, lastName, password string
 	var createdAt time.Time
-	query := `SELECT id, first_name, last_name, created_at FROM users WHERE email=$1`
+	query := `SELECT id, first_name, last_name, password, created_at FROM users WHERE email=$1`
 	row := dao.db.QueryRow(query, email)
-	err := row.Scan(&id, &firstName, &lastName, &createdAt)
+	err := row.Scan(&id, &firstName, &lastName, &password, &createdAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			dao.log.WithError(err).Error("DB-OP: a user with a similar email exists")
@@ -51,6 +51,7 @@ func (dao *dbClient) findUserByEmail(ctx context.Context, email string) (*repo.U
 		FirstName: firstName,
 		LastName:  lastName,
 		Email:     email,
+		Password:  password,
 		CreatedAt: createdAt,
 	}
 

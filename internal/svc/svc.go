@@ -56,6 +56,15 @@ func (s *svc) CreateTodoItem(ctx context.Context, item *ItemServiceRequestType) 
 	return ConvertItemModelToServiceResponseObject(itemModel), nil
 }
 
+func (s *svc) FindUserByEmail(ctx context.Context, email string) (*UserServiceRequestType, error) {
+	user, err := s.dao.FindUserByEmail(ctx, email)
+	if err != nil {
+		return nil, err
+	}
+
+	return ConvertUserModelToUserServiceObject(user), nil
+}
+
 func (s *svc) hashPassword(password []byte) (string, error) {
 	hash, err := bcrypt.GenerateFromPassword(password, bcrypt.MinCost)
 	if err != nil {
