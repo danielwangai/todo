@@ -19,7 +19,7 @@ func ValidateUserInput(u *UserAPIRequestType) []string {
 		errs = append(errs, PasswordRequiredError.Error())
 	}
 	// email format
-	if match, _ := regexp.MatchString(`[a-z0-9]+@[a-z]+\.[a-z]{2,3}`, u.Email); match {
+	if match, _ := regexp.MatchString(`^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$`, u.Email); !match {
 		errs = append(errs, InvalidEmailFormatError.Error())
 	}
 
