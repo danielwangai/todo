@@ -4,8 +4,8 @@ import (
 	"github.com/danielwangai/todo-app/internal/svc"
 )
 
-func ConvertUserRequestToServiceObject(usrRequest *svc.UserAPIRequestType) *svc.UserServiceRequestType {
-	return &svc.UserServiceRequestType{
+func ConvertUserRequestToServiceObject(usrRequest *svc.UserAPIRequestType) *svc.UserServiceType {
+	return &svc.UserServiceType{
 		FirstName: usrRequest.FirstName,
 		LastName:  usrRequest.LastName,
 		Email:     usrRequest.Email,

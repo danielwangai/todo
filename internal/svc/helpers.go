@@ -12,7 +12,7 @@ import (
 var jwtKey = []byte(os.Getenv("TODO_APP_JWT_SECRET_TOKEN"))
 
 type JWTClaim struct {
-	User *UserServiceRequestType
+	User *UserServiceType
 	jwt.StandardClaims
 }
 
@@ -21,7 +21,7 @@ func CheckPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-func GenerateJWT(user *UserServiceRequestType) (string, error) {
+func GenerateJWT(user *UserServiceType) (string, error) {
 	expirationTime := time.Now().Add(1 * time.Hour)
 	claims := &JWTClaim{
 		User: user,

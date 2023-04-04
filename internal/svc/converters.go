@@ -4,7 +4,7 @@ import (
 	repo "github.com/danielwangai/todo-app/internal/repository"
 )
 
-func ConvertUserServiceToUserModelObject(userSvcObj *UserServiceRequestType) *repo.UserModelType {
+func ConvertUserServiceToUserModelObject(userSvcObj *UserServiceType) *repo.UserModelType {
 	return &repo.UserModelType{
 		FirstName: userSvcObj.FirstName,
 		LastName:  userSvcObj.LastName,
@@ -13,8 +13,8 @@ func ConvertUserServiceToUserModelObject(userSvcObj *UserServiceRequestType) *re
 	}
 }
 
-func ConvertUserModelToUserServiceObject(userModel *repo.UserModelType) *UserServiceRequestType {
-	return &UserServiceRequestType{
+func ConvertUserModelToUserServiceObject(userModel *repo.UserModelType) *UserServiceType {
+	return &UserServiceType{
 		ID:        userModel.ID,
 		FirstName: userModel.FirstName,
 		LastName:  userModel.LastName,
