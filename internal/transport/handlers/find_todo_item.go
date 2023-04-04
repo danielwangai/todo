@@ -21,6 +21,7 @@ func FindTodoItemById(ctx context.Context, service svc.Svc, log *logrus.Logger) 
 			return
 		}
 
+		// get id from request params
 		params := mux.Vars(r)
 		id, err := strconv.Atoi(params["id"])
 		if err != nil {
@@ -28,7 +29,8 @@ func FindTodoItemById(ctx context.Context, service svc.Svc, log *logrus.Logger) 
 			respondWithError(w, http.StatusBadRequest, "invalid param[id] type. must be an integer")
 			return
 		}
-		// check user-password combination in database
+
+		// find todo item by id
 		item, err := service.FindTodoItemById(ctx, id)
 		if err != nil {
 			log.WithError(err).Errorf("an error ocurred when finding todo item by id: %d", id)

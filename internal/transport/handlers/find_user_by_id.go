@@ -21,6 +21,7 @@ func FindUserById(ctx context.Context, service svc.Svc, log *logrus.Logger) http
 			return
 		}
 
+		// get id from request params
 		params := mux.Vars(r)
 		id, err := strconv.Atoi(params["id"])
 		if err != nil {

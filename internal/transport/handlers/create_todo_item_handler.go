@@ -20,6 +20,7 @@ func CreateTodo(ctx context.Context, service svc.Svc, log *logrus.Logger) http.H
 			return
 		}
 
+		// decode request body
 		var i svc.ItemServiceRequestType
 		decoder := json.NewDecoder(r.Body)
 		if err := decoder.Decode(&i); err != nil {
@@ -29,10 +30,10 @@ func CreateTodo(ctx context.Context, service svc.Svc, log *logrus.Logger) http.H
 		}
 		i.UserId = token.User.ID
 		// validate item
-		errs := svc.ValidateCreateItemInput(&i)
+		errs := svc.ValidateItemInput(&i)
 		if len(errs) > 0 {
 			log.Errorf("create item failed because of the following errors: %v", errs)
-			respondWithJSON(w, http.StatusBadRequest, errs)
+			respondWithJSON(w, http.StatusBadRequest, map[string]interface{}{"errors": errs})
 			return
 		}
 

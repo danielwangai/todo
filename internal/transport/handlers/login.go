@@ -20,8 +20,13 @@ func Login(ctx context.Context, service svc.Svc, log *logrus.Logger) http.Handle
 			return
 		}
 		// validation
+		errs := svc.ValidateUserLoginDetails(&u)
+		if len(errs) > 0 {
+			respondWithJSON(w, http.StatusBadRequest, map[string]interface{}{"errors": errs})
+			return
+		}
 
-		// check user-password combination in database
+		// find user by email
 		user, err := service.FindUserByEmail(ctx, u.Email)
 		if err != nil {
 			log.WithError(err).Errorf("login failed due to invalid credentials from email: %s", u.Email)
@@ -29,6 +34,7 @@ func Login(ctx context.Context, service svc.Svc, log *logrus.Logger) http.Handle
 			return
 		}
 
+		// verify password
 		if !svc.CheckPasswordHash(u.Password, user.Password) {
 			log.WithError(err).Errorf("login failed due to invalid password: %s", u.Email)
 			respondWithError(w, http.StatusBadRequest, "invalid credentials")

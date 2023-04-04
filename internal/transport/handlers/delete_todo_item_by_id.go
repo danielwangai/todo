@@ -21,6 +21,7 @@ func DeleteTodoItemById(ctx context.Context, service svc.Svc, log *logrus.Logger
 			return
 		}
 
+		// get id from request params
 		params := mux.Vars(r)
 		id, err := strconv.Atoi(params["id"])
 		if err != nil {

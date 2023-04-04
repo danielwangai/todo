@@ -18,7 +18,8 @@ func GetTodoItems(ctx context.Context, service svc.Svc, log *logrus.Logger) http
 			respondWithError(w, http.StatusBadRequest, "failed to fetch todo items. Login to proceed.")
 			return
 		}
-		// check user-password combination in database
+
+		// fetch all of the current user's todo items
 		items, err := service.GetAllTodoItems(ctx, token.User.ID)
 		if err != nil {
 			log.WithError(err).Errorf("an error ocurred when getting todo items for user of id: %d", token.User.ID)

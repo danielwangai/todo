@@ -19,10 +19,11 @@ func CreateUser(ctx context.Context, service svc.Svc, log *logrus.Logger) http.H
 			respondWithError(w, http.StatusBadRequest, "Invalid request payload")
 			return
 		}
+
 		// validate user input
 		errs := svc.ValidateUserInput(&u)
 		if len(errs) > 0 {
-			respondWithJSON(w, http.StatusBadRequest, errs)
+			respondWithJSON(w, http.StatusBadRequest, map[string]interface{}{"errors": errs})
 			return
 		}
 

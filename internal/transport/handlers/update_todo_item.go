@@ -22,6 +22,7 @@ func UpdateTodoItem(ctx context.Context, service svc.Svc, log *logrus.Logger) ht
 			return
 		}
 
+		// get id from request params
 		params := mux.Vars(r)
 		id, err := strconv.Atoi(params["id"])
 		if err != nil {
@@ -29,11 +30,21 @@ func UpdateTodoItem(ctx context.Context, service svc.Svc, log *logrus.Logger) ht
 			respondWithError(w, http.StatusBadRequest, "invalid param[id] type. must be an integer")
 			return
 		}
+
+		// decode request body
 		var i svc.ItemServiceRequestType
 		decoder := json.NewDecoder(r.Body)
 		if err := decoder.Decode(&i); err != nil {
 			log.WithError(err).Error("invalid request body")
 			respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+			return
+		}
+
+		// validate item
+		errs := svc.ValidateItemInput(&i)
+		if len(errs) > 0 {
+			log.Errorf("create item failed because of the following errors: %v", errs)
+			respondWithJSON(w, http.StatusBadRequest, map[string]interface{}{"errors": errs})
 			return
 		}
 
