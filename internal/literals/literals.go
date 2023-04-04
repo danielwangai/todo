@@ -8,11 +8,13 @@ const (
 	AuthorizationHeaderName = "Authorization"
 
 	// Users
-	UsersBaseEndpoint      = "/v1/users"
-	SignupEndpoint         = UsersBaseEndpoint + "/signup"
-	CreateUserEndpointName = "create-user"
-	LoginEndpoint          = UsersBaseEndpoint + "/login"
-	LoginEndpointName      = "login"
+	UsersBaseEndpoint        = "/v1/users"
+	FindUserByIdEndpoint     = UsersBaseEndpoint + "/{id}"
+	SignupEndpoint           = UsersBaseEndpoint + "/signup"
+	CreateUserEndpointName   = "create-user"
+	FindUserByIdEndpointName = "find-user-by-id"
+	LoginEndpoint            = UsersBaseEndpoint + "/login"
+	LoginEndpointName        = "login"
 
 	// Todo
 	TodoBaseEndpoint            = "/v1/todo"

@@ -11,9 +11,9 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func DeleteTodoItemById(ctx context.Context, service svc.Svc, log *logrus.Logger) http.HandlerFunc {
+func FindUserById(ctx context.Context, service svc.Svc, log *logrus.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.Infoln("begin: delete todo item by id")
+		log.Infoln("begin: find user by id endpoint")
 		_, err := svc.GetToken(r.Header.Get(literals.AuthorizationHeaderName))
 		if err != nil {
 			log.WithError(err).Error("unauthorized access. Failed to fetch todo item by id")
@@ -29,16 +29,16 @@ func DeleteTodoItemById(ctx context.Context, service svc.Svc, log *logrus.Logger
 			return
 		}
 
-		// delete todo item
-		err = service.DeleteTodoItemById(ctx, id)
+		// find user by id
+		user, err := service.FindUserById(ctx, id)
 		if err != nil {
-			log.WithError(err).Errorf("an error ocurred when deleting todo item of id: %d", id)
-			respondWithError(w, http.StatusBadRequest, "an error ocurred when deleting todo item by id")
+			log.WithError(err).Errorf("an error ocurred when finding user by id: %d", id)
+			respondWithError(w, http.StatusBadRequest, "an error ocurred when finding user by id")
 			return
 		}
 
-		log.Infof("successfully deleted todo item: %v by id: %d")
-		respondWithJSON(w, http.StatusOK, "delete successsful")
+		log.Infof("successfully found user : %v by id: %d", user, id)
+		respondWithJSON(w, http.StatusOK, map[string]interface{}{"userr": user})
 		return
 	}
 }

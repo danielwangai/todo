@@ -55,5 +55,9 @@ func (r *Router) InitializeRoutes(ctx context.Context, service svc.Svc, log *log
 		Methods(http.MethodPut).
 		Name(literals.UpdateTodoByIdEndpointName)
 
+	r.HandleFunc(literals.FindUserByIdEndpoint, handlers.FindUserById(ctx, service, log)).
+		Methods(http.MethodGet).
+		Name(literals.FindUserByIdEndpointName)
+
 	r.Use(handlers.AuthMiddleware)
 }

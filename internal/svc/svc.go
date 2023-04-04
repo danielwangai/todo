@@ -19,7 +19,7 @@ func New(dao DAO, log *logrus.Logger) Svc {
 	return &svc{dao, log}
 }
 
-func (s *svc) CreateUser(ctx context.Context, user *UserServiceRequestType) (*UserServiceRequestType, error) {
+func (s *svc) CreateUser(ctx context.Context, user *UserServiceType) (*UserServiceType, error) {
 	// hash password
 	hash, err := s.hashPassword([]byte(user.Password))
 	if err != nil {
@@ -42,6 +42,17 @@ func (s *svc) CreateUser(ctx context.Context, user *UserServiceRequestType) (*Us
 	return user, nil
 }
 
+func (s *svc) FindUserById(ctx context.Context, id int) (*UserServiceType, error) {
+	user, err := s.dao.FindUserById(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	user.Password = ""
+
+	return ConvertUserModelToUserServiceObject(user), nil
+}
+
 func (s *svc) CreateTodoItem(ctx context.Context, item *ItemServiceRequestType) (*ItemServiceResponseType, error) {
 	// convert service request to item model
 	itemModel := ConvertItemServiceRequestToModelObject(item)
@@ -56,7 +67,7 @@ func (s *svc) CreateTodoItem(ctx context.Context, item *ItemServiceRequestType) 
 	return ConvertItemModelToServiceResponseObject(itemModel), nil
 }
 
-func (s *svc) FindUserByEmail(ctx context.Context, email string) (*UserServiceRequestType, error) {
+func (s *svc) FindUserByEmail(ctx context.Context, email string) (*UserServiceType, error) {
 	user, err := s.dao.FindUserByEmail(ctx, email)
 	if err != nil {
 		return nil, err

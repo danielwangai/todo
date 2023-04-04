@@ -57,3 +57,24 @@ func (dao *dbClient) FindUserByEmail(ctx context.Context, email string) (*repo.U
 
 	return user, nil
 }
+
+func (dao *dbClient) FindUserById(ctx context.Context, id int) (*repo.UserModelType, error) {
+	var firstName, lastName, email, password string
+	var createdAt time.Time
+	query := `SELECT id, first_name, last_name, email, password, created_at FROM users WHERE id=$1`
+	row := dao.db.QueryRow(query, id)
+	err := row.Scan(&id, &firstName, &lastName, &email, &password, &createdAt)
+	if err != nil {
+		return nil, err
+	}
+	user := &repo.UserModelType{
+		ID:        id,
+		FirstName: firstName,
+		LastName:  lastName,
+		Email:     email,
+		Password:  password,
+		CreatedAt: createdAt,
+	}
+
+	return user, nil
+}
